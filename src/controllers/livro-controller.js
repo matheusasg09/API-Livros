@@ -1,4 +1,4 @@
-import livros from "./models/Livro.js";
+import livros from "../models/Livro.js";
 
 class LivroController {
   static listarLivros(req, res) {

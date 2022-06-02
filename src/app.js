@@ -1,6 +1,7 @@
 import express from "express";
 import db from "./config/db-connect.js";
 import livros from "./models/Livro.js";
+import routes from "./routes/index.js";
 
 db.on("error", console.error.bind(console, "Erro de conexão"));
 db.once("open", () => {
@@ -9,10 +10,7 @@ db.once("open", () => {
 
 const app = express();
 app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.status(200).send("API de livros");
-});
+routes(app);
 
 app.get("/livros/:id", (req, res) => {
   const index = getBookIndex(req.params.id);
