@@ -1,5 +1,6 @@
 import express from "express";
 import db from "./config/db-connect.js";
+import livros from "./models/Livro.js";
 
 db.on("error", console.error.bind(console, "Erro de conexão"));
 db.once("open", () => {
@@ -9,23 +10,18 @@ db.once("open", () => {
 const app = express();
 app.use(express.json());
 
-const livros = [
-  {
-    id: 1,
-    titulo: "Livro 1",
-  },
-  {
-    id: 2,
-    titulo: "Livro 2",
-  },
-];
-
 app.get("/", (req, res) => {
   res.status(200).send("API de livros");
 });
 
 app.get("/livros", (req, res) => {
-  res.status(200).json(livros);
+  livros.find((error, livros) => {
+    if (error) {
+      res.status(500).send(error);
+      return;
+    }
+    res.status(200).json(livros);
+  });
 });
 
 app.get("/livros/:id", (req, res) => {
