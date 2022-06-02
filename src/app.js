@@ -14,16 +14,6 @@ app.get("/", (req, res) => {
   res.status(200).send("API de livros");
 });
 
-app.get("/livros", (req, res) => {
-  livros.find((error, livros) => {
-    if (error) {
-      res.status(500).send(error);
-      return;
-    }
-    res.status(200).json(livros);
-  });
-});
-
 app.get("/livros/:id", (req, res) => {
   const index = getBookIndex(req.params.id);
   res.status(200).json(livros[index]);
