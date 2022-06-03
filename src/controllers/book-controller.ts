@@ -1,72 +1,69 @@
 import { Request, Response } from "express";
-import livros from "../models/Book";
+import { BookInterface } from "../interfaces/Book.interface";
+import books from "../models/Book";
 
 class BookController {
   static getBooks(_req: Request, res: Response) {
-    livros.find((error, livros) => {
+    books.find((error, books) => {
       if (error) {
         res
           .status(500)
-          .send({ message: `${error.message} - Falha ao listar livros` });
+          .send({ message: `${error.message} - Falha ao listar os livros` });
         return;
       }
-      res.status(200).json(livros);
+      res.status(200).json(books);
     });
   }
 
   static getBookById(req: Request, res: Response) {
     const { id } = req.params;
-
-    livros.findById(id, (error: Error, livro: BookController) => {
+    books.findById(id, (error: Error, book: BookInterface) => {
       if (error) {
         res
           .status(400)
-          .send({ message: `${error.message} - Falha ao listar livro` });
+          .send({ message: `${error.message} - Falha ao listar o livro` });
         return;
       }
-      res.status(200).send(livro);
+      res.status(200).send(book);
     });
   }
 
   static registerBook(req: Request, res: Response) {
-    const livro = new livros(req.body);
-
-    livro.save((error: Error, livro: BookController) => {
+    const book = new books(req.body);
+    book.save((error: Error, book: BookInterface) => {
       if (error) {
         res
           .status(500)
-          .send({ message: `${error.message} - Falha ao cadastrar livro` });
+          .send({ message: `${error.message} - Falha ao cadastrar o livro` });
         return;
       }
-      res.status(201).json(livro);
+      res.status(201).json(book);
     });
   }
 
   static updateBook(req: Request, res: Response) {
     const { id } = req.params;
-
-    livros.findByIdAndUpdate(id, { $set: req.body }, (error: Error) => {
+    books.findByIdAndUpdate(id, { $set: req.body }, (error: Error) => {
       if (error) {
         res
           .status(500)
-          .send({ message: `${error.message} - Falha ao atualizar livro` });
+          .send({ message: `${error.message} - Falha ao atualizar o livro` });
         return;
       }
-      res.status(200).send({ message: "Livro atualizado com sucesso" });
+      res.status(200).send({ message: "livro atualizado com sucesso" });
     });
   }
 
   static deleteBook(req: Request, res: Response) {
     const { id } = req.params;
-
-    livros.findByIdAndDelete(id, (error: Error) => {
+    books.findByIdAndDelete(id, (error: Error) => {
       if (error) {
         res
           .status(500)
-          .send({ message: `${error.message} - Falha ao excluir livro` });
+          .send({ message: `${error.message} - Falha ao excluir o livro` });
         return;
       }
-      res.status(200).send({ message: "Livro excluído com sucesso" });
+      res.status(200).send({ message: "livro excluído com sucesso" });
     });
   }
 }
